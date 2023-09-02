@@ -1,13 +1,15 @@
 import { Controller, Get, Query, Param } from '@nestjs/common';
+import { ProductService } from '../../services/product';
 
 @Controller('products')
 export class ProductsController {
+  constructor(private readonly productService: ProductService) {}
+
   @Get('/')
   getProducts(
     @Query() query: { limit: string; offset: string; brand: string },
   ): string {
-    const { limit, offset, brand } = query;
-    return `PRODUCTS => Limit: ${limit} - Offset: ${offset} - Brand: ${brand}`;
+    return this.productService.getProducts(query);
   }
 
   @Get('/filter')
